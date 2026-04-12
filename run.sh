@@ -1,3 +1,2 @@
-
 #!/bin/bash
-python3 /app/src/save-manager.py
+exec python3 /app/save-manager.py

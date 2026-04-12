@@ -273,7 +273,7 @@ class MainWindow(Adw.ApplicationWindow):
 
 class GameApp(Adw.Application):
     def __init__(self):
-        super().__init__(application_id="com.bongo.GameManager")
+        super().__init__(application_id="org.bongo.protonsavemgr")
 
     def do_activate(self):
         win = MainWindow(self)

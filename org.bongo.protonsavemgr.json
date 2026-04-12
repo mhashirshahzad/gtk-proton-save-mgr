@@ -1,0 +1,33 @@
+{
+  "app-id": "org.bongo.protonsavemgr",
+  "runtime": "org.gnome.Platform",
+  "runtime-version": "46",
+  "sdk": "org.gnome.Sdk",
+  "command": "protonsavemgr",
+
+  "finish-args": [
+    "--share=network",
+    "--filesystem=home",
+    "--socket=wayland",
+    "--socket=x11"
+  ],
+
+  "modules": [
+    {
+      "name": "protonsavemgr",
+      "buildsystem": "simple",
+      "build-commands": [
+        "install -Dm755 run.sh /app/bin/protonsavemgr",
+
+        "install -Dm644 src/save-manager.py /app/save-manager.py",
+        "install -Dm644 src/ui.py /app/ui.py",
+        "install -Dm644 src/models.py /app/models.py",
+        "install -Dm644 src/variables.py /app/variables.py"
+      ],
+      "sources": [
+        { "type": "dir", "path": "." },
+        { "type": "file", "path": "run.sh" }
+      ]
+    }
+  ]
+}
