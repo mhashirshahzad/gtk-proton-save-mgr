@@ -1,0 +1,13 @@
+/* style.css */
+.icon-container {
+    background-color: rgba(0, 0, 0, 0.3);  /* Darker background */
+    border-radius: 12px;  /* Squircle effect */
+    padding: 8px;
+    min-width: 48px;
+    min-height: 48px;
+}
+
+/* Optional: Add hover effect */
+.icon-container:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+}

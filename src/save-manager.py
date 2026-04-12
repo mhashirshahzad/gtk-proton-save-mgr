@@ -11,67 +11,27 @@ import ui
 # -------- Constants --------
 
 STEAM_PATH = os.path.expanduser("~/.local/share/Steam")
-APPCACHE_PATH = os.path.join(STEAM_PATH, "appcache")
-APPINFO_PATH = os.path.join(APPCACHE_PATH, "appinfo.vdf")
-LIBRARYCACHE_PATH = os.path.join(APPCACHE_PATH, "librarycache")
+LIBRARYCACHE_PATH = os.path.join(STEAM_PATH, "appcache", "librarycache")
 
 # -------- Steam Icon --------
 
-def get_icon_hash_from_appinfo(appid):
-    """
-    Extract icon hash for a game from local appinfo.vdf.
-    Returns the hash string or None if not found.
-    """
-    if not os.path.exists(APPINFO_PATH):
-        return None
-    
-    try:
-        # Parse the binary VDF file
-        with open(APPINFO_PATH, "rb") as f:
-            data = vdf.binary_load(f)
-        
-        # Navigate to the app's icon hash
-        # Structure: data[appid]["common"]["icon"]
-        app_data = data.get(str(appid))
-        if app_data and "common" in app_data:
-            common = app_data["common"]
-            if "icon" in common:
-                return common["icon"]
-            # Some games use "clienticon" instead
-            if "clienticon" in common:
-                return common["clienticon"]
-    except Exception as e:
-        print(f"Error parsing appinfo.vdf for {appid}: {e}")
-    
-    return None
-
 def get_steam_icon_path(appid):
     """
-    Get the full path to a game's icon using local appinfo.vdf.
+    Get the full path to a game's icon by finding any JPG in the librarycache folder.
     """
-    # First, get the icon hash from appinfo.vdf
-    icon_hash = get_icon_hash_from_appinfo(appid)
+    icon_dir = os.path.join(LIBRARYCACHE_PATH, str(appid))
     
-    if not icon_hash:
+    if not os.path.exists(icon_dir):
         return None
     
-    # Construct the icon path
-    icon_path = os.path.join(
-        LIBRARYCACHE_PATH,
-        str(appid), 
-        f"{icon_hash}.jpg"
-    )
+    # Look for any .jpg file in the directory
+    for file in os.listdir(icon_dir):
+        if file.endswith('.jpg'):
+            icon_path = os.path.join(icon_dir, file)
+            print(f"Found icon for appid {appid}: {file}")  # Debug
+            return icon_path
     
-    if os.path.exists(icon_path):
-        return icon_path
-    
-    # Fallback: try to find any jpg in the directory
-    icon_dir = os.path.join(LIBRARYCACHE_PATH, str(appid))
-    if os.path.exists(icon_dir):
-        for file in os.listdir(icon_dir):
-            if file.endswith('.jpg'):
-                return os.path.join(icon_dir, file)
-    
+    print(f"No icon found for appid {appid} in {icon_dir}")  # Debug
     return None
 
 
@@ -110,7 +70,7 @@ def load_steam():
             appid = manifest["AppState"]["appid"]
             name = manifest["AppState"]["name"]
             
-            # Get icon path
+            # Get icon path by looking for any JPG in the cache folder
             icon_path = get_steam_icon_path(appid)
 
             variables.steam_games.append(
