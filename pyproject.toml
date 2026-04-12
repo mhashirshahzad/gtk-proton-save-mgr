@@ -1,0 +1,26 @@
+# pyproject.toml
+[project]
+name = "gtk-proton-save-mgr"
+version = "0.1.0"
+description = "GTK Proton Save Manager"
+authors = [
+    {name = "Hashir", email = "hashir447079@gmail.com"},
+]
+license = {text = "GPL-3"}
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "pyyaml>=6.0",
+    "vdf>=3.4",
+    "pygobject>=3.46.0",
+]
+
+[project.scripts]
+my-gtk-app = "src.save-manager:main"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]

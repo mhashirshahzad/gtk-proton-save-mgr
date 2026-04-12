@@ -21,12 +21,14 @@ Debian/Ubuntu:
 ```bash
 sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-4.0 libadwaita-1-0
 ```
-### Installation
+### Running
 
 ```bash
 git clone https://github.com/mhashirshahzad/gtk-proton-save-mgr
 
 cd gtk-proton-save-mgr
 
-make run
+chmod +x run.sh
+
+./run.sh
 ```

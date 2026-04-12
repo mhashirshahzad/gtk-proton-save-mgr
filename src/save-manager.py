@@ -80,6 +80,11 @@ def load_nonsteam():
         for entry in data["shortcuts"].values():
             name = entry.get("AppName")
             appid = entry.get("appid")
+
+            # signed and unsigned magic
+            # some appids are negative
+            # so using this we can convert them into positive
+            # and get the actual path
             u_appid = appid & 0xFFFFFFFF
 
             variables.non_steam_games.append(

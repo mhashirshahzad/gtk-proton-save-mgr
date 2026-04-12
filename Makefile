@@ -1,30 +1,35 @@
-# PYTHON=python3
-VENV=.venv
+VENV = venv
+PYTHON = $(VENV)/bin/python
+PIP = $(VENV)/bin/pip
 
-PY=$(VENV)/bin/python
+.PHONY: setup run clean install
 
-REQUIREMENTS=requirements.txt
+# Setup virtual environment and install dependencies
+setup:
+	@echo "Setting up virtual environment..."
+	python3 -m venv $(VENV)
+	@echo "Installing dependencies..."
+	$(PIP) install --upgrade pip
+	$(PIP) install pyyaml vdf pygobject
+	@echo "✅ Setup complete! Run 'make run'"
 
+# Install/update dependencies (run this if deps change)
+install:
+	$(PIP) install --upgrade pyyaml vdf pygobject
+
+# Run the application
 run:
-	python src/save-manager.py
-
-deps: venv pip-bootstrap
-	$(PY) -m pip install --upgrade pip
-	$(PY) -m pip install -r $(REQUIREMENTS)
-
-venv:
-	@if [ ! -d $(VENV) ]; then \
-		echo "Creating venv..."; \
-		$(PYTHON) -m venv $(VENV); \
+	@if [ ! -d "$(VENV)" ]; then \
+		echo "Virtual environment not found. Running setup..."; \
+		$(MAKE) setup; \
 	fi
+	$(PYTHON) src/save-manager.py
 
-pip-bootstrap:
-	@echo "Ensuring pip exists in venv..."
-	@$(PY) -m ensurepip --upgrade || true
-
-system-check:
-	@python3 -c "import gi; gi.require_version('Gtk','4.0'); from gi.repository import Gtk" || \
-	(echo "Missing GTK system deps" && exit 1)
-
+# Clean everything
 clean:
 	rm -rf $(VENV)
+	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+
+# Check installed packages
+check:
+	$(PIP) list
