@@ -33,9 +33,9 @@ class Sidebar(Gtk.Box):
         self.set_margin_end(8)
 
         self.add_btn("Steam", "steam")
-        self.add_btn("Non-Steam", "nonsteam")
+        self.add_btn("Non Steam", "nonsteam")
         self.add_btn("Lutris", "lutris")
-        self.add_btn("Prefixes", "prefixes")
+        self.add_btn("Default Prefixes", "prefixes")
 
     def add_btn(self, label, key):
         btn = Gtk.Button(label=label)
