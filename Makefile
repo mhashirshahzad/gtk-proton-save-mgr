@@ -11,6 +11,8 @@ setup:
 	@echo "Installing dependencies..."
 	$(PIP) install --upgrade pip
 	$(PIP) install pyyaml vdf pygobject
+	@echo "Installing LSP..."
+	$(PIP) install python-lsp-server
 	@echo "✅ Setup complete! Run 'make run'"
 
 # Install/update dependencies (run this if deps change)
