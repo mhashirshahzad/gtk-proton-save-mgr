@@ -20,14 +20,13 @@ class SteamGame:
             try:
                 # Get original image dimensions
                 original = GdkPixbuf.Pixbuf.new_from_file(self.icon_path)
-                print(f"Original icon size for {self.name}: {original.get_width()}x{original.get_height()}")
             
                 # Don't upscale if original is smaller than requested
-                load_size = min(size, original.get_width(), original.get_height())
                 self.icon_pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(
-                    self.icon_path, load_size, load_size
+                    self.icon_path, original.get_width(), original.get_height()
                 )
-                print(f"Loaded at size: {load_size}x{load_size}")
+
+                print(f"Loading icon size for {self.name}: {original.get_width()}x{original.get_height()}")
                 return self.icon_pixbuf
             except Exception as e:
                 print(f"Failed to load icon for {self.name}: {e}")
